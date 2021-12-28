@@ -43,6 +43,7 @@ function App() {
                     </Route>
 
                     <Route path='/about' element={<AboutPage />}/>
+                    <Route path='/post/*' element={<Post />}/>  
                     <Route path='/post/:id/:name' element={<Post />}/>
                 </Routes>
                 
@@ -56,3 +57,4 @@ function App() {
 export default App
 
 //_rfce                 React Functional Component Export
+//post/*                El * sirve para cualquier otra url a ser agregada posteriormente
