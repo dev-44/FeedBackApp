@@ -1,14 +1,30 @@
-import { useState} from 'react'
+import { useState, useContext, useEffect} from 'react'
 import RatingSelect from './RatingSelect'
 import Card from './shared/Card'
 import Button from './shared/Button'
+import FeedbackContext from '../context/FeedbackContext'
 
-function FeedbackForm({handleAdd}) {
 
+
+//function FeedbackForm({handleAdd}) {
+function FeedbackForm() {
+
+    const { addFeedback, feedbackEdit, updateFeedback } = useContext(FeedbackContext)
+    
     const [text, setText] = useState('')
     const [rating, setRating] = useState(10)
     const [btnDisabled, setBtnDisabled] = useState(true)
     const [message, setMessage] = useState('')
+
+    //If the second parameter is empty, it runs once when the page is loading for the first time
+    useEffect(() => {
+        //console.log('Hello')
+        if (feedbackEdit.edit === true) {
+            setBtnDisabled(false)
+            setText(feedbackEdit.item.text)
+            setRating(feedbackEdit.item.rating)
+        }
+    }, [feedbackEdit])                                                  
 
     const handleTextChange = (e) => {
         if (text === '') {
@@ -33,8 +49,15 @@ function FeedbackForm({handleAdd}) {
                 rating
             }
 
-            //console.log(newFeedback)
-            handleAdd(newFeedback)
+            //Update feedback
+            if (feedbackEdit.edit === true) {
+                updateFeedback(feedbackEdit.item.id, newFeedback)
+            } else {
+                //console.log(newFeedback)
+                //handleAdd(newFeedback)
+                addFeedback(newFeedback)
+            }
+
             setText('')                         //Empty the text input
         }
     }
