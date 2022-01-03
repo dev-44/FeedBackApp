@@ -1,5 +1,5 @@
  //import {useParams} from'react-router-dom'
- import { Navigate, useNavigate, Routes, Route } from 'react-router-dom'               
+ import { useNavigate, Routes, Route } from 'react-router-dom'               
  //Navigate = component
 //useNavigate = Hook
  
