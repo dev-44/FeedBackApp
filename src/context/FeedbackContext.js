@@ -16,16 +16,18 @@ export const FeedbackProvider = ({children}) => {
 
     //Fetch feedback data
     const fetchFeedback = async () => {
-        const response = await fetch('http://localhost:5000/feedback/feedback?_sort=id&order=desc')
+        const response = await fetch('http://localhost:5000/feedback?_sort=id&order=desc')
         const data = await response.json()
         //console.log(data)
         setFeedback(data)
         setIsLoading(false)
     }
 
-    const deleteFeedback = (id) => {
+    const deleteFeedback = async (id) => {
         //console.log('App: ' + id)
         if(window.confirm('Are you sure you want to delete?')) {
+
+            await fetch(`http://localhost:5000/feedback/${id}`, {method: 'DELETE'})
             setFeedback(feedback.filter((item) => item.id !== id))
         }
     }
@@ -39,7 +41,11 @@ export const FeedbackProvider = ({children}) => {
             body: JSON.stringify(newFeedback)
         })
 
+        console.log('Response ADD')
+        console.log(response)
         const data = await response.json()
+        console.log('ADD Data')
+        console.log(data)
 
         //newFeedback.id = uuidv4()
         //console.log(newFeedback.id)
@@ -54,11 +60,27 @@ export const FeedbackProvider = ({children}) => {
         })
     }
 
-    const updateFeedback = (id, updItem) => {
+    const updateFeedback = async (id, updItem) => {
+
+        console.log('upd ITEM')
+        console.log(updItem)
+        const response = await fetch(`http://localhost:5000/feedback/${id}`, {
+            method: 'PUT',
+            header: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updItem)
+        })
+        const data = await response.json()
+
         //console.log(id, updItem)
-        setFeedback(
-            feedback.map((item) => (item.id === id ? {...item, ...updItem} : item ))
-        )
+        //setFeedback(feedback.map((item) => (item.id === id ? {...item, ...updItem} : item )))
+        setFeedback(feedback.map((item) => (item.id === id ? {...item, ...data} : item )))
+
+        setFeedbackEdit({   
+            item:{},
+            edit: false
+        })
     }
 
     return <FeedbackContext.Provider value={{
