@@ -16,7 +16,13 @@ export const FeedbackProvider = ({children}) => {
 
     //Fetch feedback data
     const fetchFeedback = async () => {
-        const response = await fetch('http://localhost:5000/feedback?_sort=id&order=desc')
+        const response = await fetch('http://localhost:5000/feedback?_sort=id&order=desc', {
+            headers: {
+                "Access-Control-Allow-Headers" : "Content-Type",
+                "Access-Control-Allow-Origin": "https://localhost:3000",
+                "Access-Control-Allow-Methods": "PUT,POST,GET"
+            }
+        })
         const data = await response.json()
         //console.log(data)
         setFeedback(data)
