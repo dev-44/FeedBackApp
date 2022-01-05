@@ -66,7 +66,7 @@ export const FeedbackProvider = ({children}) => {
         console.log(updItem)
         const response = await fetch(`http://localhost:5000/feedback/${id}`, {
             method: 'PUT',
-            header: {
+            headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(updItem)
